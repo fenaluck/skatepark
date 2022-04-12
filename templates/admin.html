@@ -1,77 +1,93 @@
-{% extends 'layout.html' %}
-{% from 'macros.html' import navbar %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+      integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="estilos.css" />
+  </head>
+  <body>
+    <h1>Skate Park</h1>
 
-{% block styles %}
-<style>
-  body {
-    background: black;
-    color: white;
-    text-align: center;
-  }
+    <div class="py-4">
+      <h2>Administración</h2>
+      <hr class="w-50"/>
 
-  td,
-  th {
-    color: white;
-    text-align: center;
-  }
+      <table class="table w-50 m-auto">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Foto</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Años de experiencia</th>
+            <th scope="col">Especialidad</th>
+            <th scope="col">Estado</th>
+          </tr>
+          
+        </thead>
+        <tbody>
+          {% for user in users %}
+          <tr>
+              <td>{{ user.id }}</td>
+              <td>
+                 <img 
+                    src="img/{{user.foto}}" 
+                    alt="photo" 
+                    width="50" 
+                    height="50">
+                  >
+              </td>
+              <td>{{ user.nombre }}</td>
 
-  .col {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-  }
-</style>
-{% endblock %}
+              <td>{{ user.year_exp }}</td>
+              <td>{{ user.especialidad }}</td>
 
-{% block main %}
-  {{ navbar('/admin') }}
+              <td>
+                <input 
+                  data-id="{{ user.id }}" 
+                  type="checkbox" 
+                  class="check-estado" 
+                  {% if user.estado %}checked{% endif %}
+                >
+              </td>
 
-  <h2 class="mb-2">Usuarios registrados</h2>
-  <table class="table">
-    <thead>
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col">Nombre</th>
-        <th scope="col">Correo</th>
-        <th scope="col">Validado</th>
-      </tr>
-    </thead>
-    <tbody id="cuerpo">
-      {% for user in users %}
-        <tr>
-          <td>{{ user.id }}</td>
-          <td>{{ user.name }}</td>
-          <td>{{ user.email }}</td>
-          <td><input data-id="{{ user.id }}" type="checkbox" class="check-auth" {% if user.auth %}checked{% endif %}></td>
-        </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-{% endblock %}
+          </tr>
+          {% endfor %}
 
-{% block scripts %}
-  <script
-    src="https://code.jquery.com/jquery-3.5.1.js"
-    integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
-    crossorigin="anonymous"
-  ></script>
-  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-  <script>
-    $('.check-auth').on('click', async function () {
-      // 1. Recuperamos si el checkbox está checked o no
-      const esta_validado = $(this).is(':checked')
-      // recuperamos el id del usuario (desde un atributo "data-")
-      const user_id = $(this).attr('data-id')
+        </tbody>
+      </table>
+      <a href="/">Lista de Participantes</a> 
+      
+      {% block scripts %}
 
-      // mandamos un PUT mediante AJAX
-      await axios.put(`/users/${user_id}`, {
-        new_auth: esta_validado
-      })
+      <script 
+            src="https://code.jquery.com/jquery-3.5.1.js" 
+            integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" 
+            crossorigin="anonymous">
+      </script>
+      <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+      <script>
+          $('.check-estado').on('click', async function() {
+            const estado = $(this).is(':checked')
+            const id = $(this).attr('data-id')
+            await axios.put(`/users/${id}`, 
+                {
+                  nuevo_estado: estado
+                 })
 
-      console.log(`El usuario ${user_id} cambia a ${esta_validado}`)
-    })
-  </script>
-{% endblock %}
+              console.log(`El usuario ${id} cambia a ${estado}`);
 
-
-
+          })
+      </script>
+      
+      {% endblock %}
+    </div>
+  </body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+      integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="estilos.css" />
+  </head>
+  <body>
+    <h1>Skate Park</h1>
+
+    {% for error in errors %}
+    <div class="alert alert-success alert-dismissible fade show" role= "alert">{{error}}</div>
+    
+    {% endfor %}
+
+    <div class="py-4">
+      <h3>Lista de participantes</h3> 
+      <a type="button" href="/datos" class="btn btn-success ml-5" id="actualizar" name="actualizar">Actualizar datos</a></h2>
+
+      <hr/>
+
+      <table class="table table-dark">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Foto</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Años de experiencia</th>
+            <th scope="col">Especialidad</th>
+            <th scope="col">Estado</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for user in users %}
+          <tr>
+            <td>{{ user.id }}</td>
+            <td>
+              <img 
+                src="/img/{{ user.foto }}" 
+                style="width: 100px;">
+              </img>
+            </td>
+            <td>{{ user.nombre }}</td>
+            <td>{{ user.anos_experiencia}}</td>
+            <td>{{ user.especialidad }}</td>
+            <td>{% if user.estado %} 
+              <span class="fw-bold text-success">Aprobado</span>
+                {% else %} 
+              <span class="fw-bold text-warning">En revisión</span>
+                {% endif %}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      {% if not user %}
+      <a href="/login">Iniciar Sesión</a> |
+      <a href="/register">Registrarme</a> 
+      {% else %}
+      <a href="/datos">Datos del Usuario</a>
+      <a href="/admin">Administrador</a>
+      <a href="/logout">Cerrar sesion</a>
+      {% endif %}
+    </div>
+  </body>
+
+</html>

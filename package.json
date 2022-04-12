@@ -1,7 +1,6 @@
 {
-  "name": "la_nasa",
+  "name": "skatepark",
   "version": "1.0.0",
-  "description": "",
   "main": "routes.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -19,5 +18,5 @@
     "nodemon": "^2.0.15",
     "nunjucks": "^3.2.3",
     "pg": "^8.7.3"
-  }
+  }  
 }
